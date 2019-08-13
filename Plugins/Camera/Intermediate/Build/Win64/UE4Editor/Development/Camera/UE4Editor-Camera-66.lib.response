@@ -1,0 +1,16 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UE4Editor-Camera-66.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"D:\any\Unreal Projects\wrapper\Intermediate\Build\Win64\wrapperEditor\Development\UnrealEd\SharedPCH.UnrealEd.h.obj"
+"D:\any\Unreal Projects\wrapper\Plugins\Camera\Intermediate\Build\Win64\UE4Editor\Development\Camera\Module.Camera.cpp.obj"
+"D:\any\Unreal Projects\wrapper\Plugins\Camera\Intermediate\Build\Win64\UE4Editor\Development\Camera\Camera.cpp.obj"
+"D:\any\Unreal Projects\wrapper\Plugins\Camera\Intermediate\Build\Win64\UE4Editor\Development\Camera\MyActor.cpp.obj"
+"D:\any\Unreal Projects\wrapper\Plugins\Camera\Intermediate\Build\Win64\UE4Editor\Development\Camera\MySlateBrushAsset.cpp.obj"
+"D:\any\Unreal Projects\wrapper\Plugins\Camera\Intermediate\Build\Win64\UE4Editor\Development\Camera\Module.Camera.gen.cpp.obj"
+"D:\any\Unreal Projects\wrapper\Plugins\Camera\Intermediate\Build\Win64\UE4Editor\Development\Camera\PCLaunch.rc.res"
+/OUT:"D:\any\Unreal Projects\wrapper\Plugins\Camera\Intermediate\Build\Win64\UE4Editor\Development\Camera\UE4Editor-Camera-66.lib"

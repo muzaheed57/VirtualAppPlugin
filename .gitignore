@@ -30,3 +30,14 @@
 *.exe
 *.out
 *.app
+
+*.vs
+*.sln
+*.uproject
+/Source
+/Saved
+/Intermediate
+/Content
+/Config
+/Build
+/Binaries
