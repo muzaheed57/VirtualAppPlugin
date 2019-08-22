@@ -13,7 +13,7 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 #endif
 #define CAMERA_MyActor_generated_h
 
-#define wrapper_Plugins_Camera_Source_Camera_Public_MyActor_h_17_RPC_WRAPPERS \
+#define VirtualAppPlugin_Plugins_Camera_Source_Camera_Public_MyActor_h_17_RPC_WRAPPERS \
  \
 	DECLARE_FUNCTION(execLaunchTCP) \
 	{ \
@@ -24,7 +24,7 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 	}
 
 
-#define wrapper_Plugins_Camera_Source_Camera_Public_MyActor_h_17_RPC_WRAPPERS_NO_PURE_DECLS \
+#define VirtualAppPlugin_Plugins_Camera_Source_Camera_Public_MyActor_h_17_RPC_WRAPPERS_NO_PURE_DECLS \
  \
 	DECLARE_FUNCTION(execLaunchTCP) \
 	{ \
@@ -35,7 +35,7 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 	}
 
 
-#define wrapper_Plugins_Camera_Source_Camera_Public_MyActor_h_17_INCLASS_NO_PURE_DECLS \
+#define VirtualAppPlugin_Plugins_Camera_Source_Camera_Public_MyActor_h_17_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesAMyActor(); \
 	friend struct Z_Construct_UClass_AMyActor_Statics; \
@@ -44,7 +44,7 @@ public: \
 	DECLARE_SERIALIZER(AMyActor)
 
 
-#define wrapper_Plugins_Camera_Source_Camera_Public_MyActor_h_17_INCLASS \
+#define VirtualAppPlugin_Plugins_Camera_Source_Camera_Public_MyActor_h_17_INCLASS \
 private: \
 	static void StaticRegisterNativesAMyActor(); \
 	friend struct Z_Construct_UClass_AMyActor_Statics; \
@@ -53,7 +53,7 @@ public: \
 	DECLARE_SERIALIZER(AMyActor)
 
 
-#define wrapper_Plugins_Camera_Source_Camera_Public_MyActor_h_17_STANDARD_CONSTRUCTORS \
+#define VirtualAppPlugin_Plugins_Camera_Source_Camera_Public_MyActor_h_17_STANDARD_CONSTRUCTORS \
 	/** Standard constructor, called after all reflected properties have been initialized */ \
 	NO_API AMyActor(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
 	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(AMyActor) \
@@ -66,7 +66,7 @@ private: \
 public:
 
 
-#define wrapper_Plugins_Camera_Source_Camera_Public_MyActor_h_17_ENHANCED_CONSTRUCTORS \
+#define VirtualAppPlugin_Plugins_Camera_Source_Camera_Public_MyActor_h_17_ENHANCED_CONSTRUCTORS \
 	/** Standard constructor, called after all reflected properties have been initialized */ \
 	NO_API AMyActor(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()) : Super(ObjectInitializer) { }; \
 private: \
@@ -79,32 +79,32 @@ DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(AMyActor); \
 	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(AMyActor)
 
 
-#define wrapper_Plugins_Camera_Source_Camera_Public_MyActor_h_17_PRIVATE_PROPERTY_OFFSET
-#define wrapper_Plugins_Camera_Source_Camera_Public_MyActor_h_14_PROLOG
-#define wrapper_Plugins_Camera_Source_Camera_Public_MyActor_h_17_GENERATED_BODY_LEGACY \
+#define VirtualAppPlugin_Plugins_Camera_Source_Camera_Public_MyActor_h_17_PRIVATE_PROPERTY_OFFSET
+#define VirtualAppPlugin_Plugins_Camera_Source_Camera_Public_MyActor_h_14_PROLOG
+#define VirtualAppPlugin_Plugins_Camera_Source_Camera_Public_MyActor_h_17_GENERATED_BODY_LEGACY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	wrapper_Plugins_Camera_Source_Camera_Public_MyActor_h_17_PRIVATE_PROPERTY_OFFSET \
-	wrapper_Plugins_Camera_Source_Camera_Public_MyActor_h_17_RPC_WRAPPERS \
-	wrapper_Plugins_Camera_Source_Camera_Public_MyActor_h_17_INCLASS \
-	wrapper_Plugins_Camera_Source_Camera_Public_MyActor_h_17_STANDARD_CONSTRUCTORS \
+	VirtualAppPlugin_Plugins_Camera_Source_Camera_Public_MyActor_h_17_PRIVATE_PROPERTY_OFFSET \
+	VirtualAppPlugin_Plugins_Camera_Source_Camera_Public_MyActor_h_17_RPC_WRAPPERS \
+	VirtualAppPlugin_Plugins_Camera_Source_Camera_Public_MyActor_h_17_INCLASS \
+	VirtualAppPlugin_Plugins_Camera_Source_Camera_Public_MyActor_h_17_STANDARD_CONSTRUCTORS \
 public: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
 
-#define wrapper_Plugins_Camera_Source_Camera_Public_MyActor_h_17_GENERATED_BODY \
+#define VirtualAppPlugin_Plugins_Camera_Source_Camera_Public_MyActor_h_17_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	wrapper_Plugins_Camera_Source_Camera_Public_MyActor_h_17_PRIVATE_PROPERTY_OFFSET \
-	wrapper_Plugins_Camera_Source_Camera_Public_MyActor_h_17_RPC_WRAPPERS_NO_PURE_DECLS \
-	wrapper_Plugins_Camera_Source_Camera_Public_MyActor_h_17_INCLASS_NO_PURE_DECLS \
-	wrapper_Plugins_Camera_Source_Camera_Public_MyActor_h_17_ENHANCED_CONSTRUCTORS \
+	VirtualAppPlugin_Plugins_Camera_Source_Camera_Public_MyActor_h_17_PRIVATE_PROPERTY_OFFSET \
+	VirtualAppPlugin_Plugins_Camera_Source_Camera_Public_MyActor_h_17_RPC_WRAPPERS_NO_PURE_DECLS \
+	VirtualAppPlugin_Plugins_Camera_Source_Camera_Public_MyActor_h_17_INCLASS_NO_PURE_DECLS \
+	VirtualAppPlugin_Plugins_Camera_Source_Camera_Public_MyActor_h_17_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
 
 #undef CURRENT_FILE_ID
-#define CURRENT_FILE_ID wrapper_Plugins_Camera_Source_Camera_Public_MyActor_h
+#define CURRENT_FILE_ID VirtualAppPlugin_Plugins_Camera_Source_Camera_Public_MyActor_h
 
 
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

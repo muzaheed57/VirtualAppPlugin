@@ -24,7 +24,7 @@
 /wd4838
 /we4668
 /I .
-/I "D:\any\Unreal Projects\wrapper\Plugins\Camera\Source\Camera\Private"
+/I D:\any\git\VirtualAppPlugin\Plugins\Camera\Source\Camera\Private
 /I Runtime
 /I Runtime\Projects\Public
 /I Runtime\Projects
@@ -413,10 +413,10 @@
 /I Runtime\AIModule\Public
 /I Runtime\AIModule\Classes
 /I Runtime\AIModule
-/I "D:\any\Unreal Projects\wrapper\Plugins\Camera\Intermediate\Build\Win64\UE4Editor\Inc\Camera"
-/I "D:\any\Unreal Projects\wrapper\Plugins\Camera\Source"
-/I "D:\any\Unreal Projects\wrapper\Plugins\Camera\Source\Camera\Public"
-/I "D:\any\Unreal Projects\wrapper\Plugins\Camera\Source\Camera"
+/I D:\any\git\VirtualAppPlugin\Plugins\Camera\Intermediate\Build\Win64\UE4Editor\Inc\Camera
+/I D:\any\git\VirtualAppPlugin\Plugins\Camera\Source
+/I D:\any\git\VirtualAppPlugin\Plugins\Camera\Source\Camera\Public
+/I D:\any\git\VirtualAppPlugin\Plugins\Camera\Source\Camera
 /I Runtime\Networking\Public
 /I Runtime\Networking
 /I Runtime\Networking\Public\Common
@@ -429,12 +429,12 @@
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\shared"
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\um"
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\winrt"
-/FI"D:\any\Unreal Projects\wrapper\Intermediate\Build\Win64\wrapperEditor\Development\UnrealEd\SharedPCH.UnrealEd.h"
-/Yu"D:\any\Unreal Projects\wrapper\Intermediate\Build\Win64\wrapperEditor\Development\UnrealEd\SharedPCH.UnrealEd.h"
-/Fp"D:\any\Unreal Projects\wrapper\Intermediate\Build\Win64\wrapperEditor\Development\UnrealEd\SharedPCH.UnrealEd.h.pch"
-"D:\any\Unreal Projects\wrapper\Plugins\Camera\Intermediate\Build\Win64\UE4Editor\Development\Camera\Module.Camera.cpp"
-/FI"D:\any\Unreal Projects\wrapper\Plugins\Camera\Intermediate\Build\Win64\UE4Editor\Development\Camera\Definitions.Camera.h"
-/Fo"D:\any\Unreal Projects\wrapper\Plugins\Camera\Intermediate\Build\Win64\UE4Editor\Development\Camera\Module.Camera.cpp.obj"
+/FI"D:\any\git\VirtualAppPlugin\Intermediate\Build\Win64\wrapperEditor\Development\UnrealEd\SharedPCH.UnrealEd.h"
+/Yu"D:\any\git\VirtualAppPlugin\Intermediate\Build\Win64\wrapperEditor\Development\UnrealEd\SharedPCH.UnrealEd.h"
+/Fp"D:\any\git\VirtualAppPlugin\Intermediate\Build\Win64\wrapperEditor\Development\UnrealEd\SharedPCH.UnrealEd.h.pch"
+"D:\any\git\VirtualAppPlugin\Plugins\Camera\Intermediate\Build\Win64\UE4Editor\Development\Camera\Module.Camera.cpp"
+/FI"D:\any\git\VirtualAppPlugin\Plugins\Camera\Intermediate\Build\Win64\UE4Editor\Development\Camera\Definitions.Camera.h"
+/Fo"D:\any\git\VirtualAppPlugin\Plugins\Camera\Intermediate\Build\Win64\UE4Editor\Development\Camera\Module.Camera.cpp.obj"
 /TP
 /GR-
 /W4

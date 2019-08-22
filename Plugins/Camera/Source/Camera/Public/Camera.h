@@ -23,7 +23,7 @@ public:
 	float vInterpToSpeed = 100;
 	int32 coordinateMul = 500;
 	bool showDebugMessage = false;
-	FString ip = "192.168.110.50";
+	FString ip = "192.168.110.16";
 	FString port = "7777";
 
 	/** IModuleInterface implementation */

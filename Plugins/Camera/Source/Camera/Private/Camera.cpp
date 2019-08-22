@@ -80,15 +80,8 @@ TSharedRef<SDockTab> FCameraModule::OnSpawnPluginTab(const FSpawnTabArgs& SpawnT
 	Options.Empty();
 	for (TObjectIterator<AActor> It; It; ++It)
 	{
-
 		Options.Add(MakeShareable(new FString(It->GetName())));
 	}
-	//for (TObjectIterator<UActor> It; It; ++It)
-	//{
-	//	if (It->IsChildOf(UBlueprintCore::StaticClass())
-	//		&& !It->HasAnyClassFlags(CLASS_Abstract))
-	//	Options.Add(MakeShareable(new FString(It->GetName())));
-	//}
 
 	CurrentItem = Options[5];
 
@@ -220,19 +213,22 @@ TSharedRef<SDockTab> FCameraModule::OnSpawnPluginTab(const FSpawnTabArgs& SpawnT
 							+ SUniformGridPanel::Slot(0, 1)
 								[
 									SNew(SBorder)
-									//BorderBackgroundColor(FSlateColor(FLinearColor::Yellow))
+									.BorderBackgroundColor(FSlateColor(FLinearColor::Yellow))
 								]
 							+ SUniformGridPanel::Slot(0, 2)
 								[
 									SNew(SBorder)
+									.BorderBackgroundColor(FSlateColor(FLinearColor::Yellow))
 								]
 							+ SUniformGridPanel::Slot(0, 3)
 								[
 									SNew(SBorder)
+									.BorderBackgroundColor(FSlateColor(FLinearColor::Yellow))
 								]
 							+ SUniformGridPanel::Slot(0, 4)
 								[
 									SNew(SBorder)
+									.BorderBackgroundColor(FSlateColor(FLinearColor::Yellow))
 								]
 							+ SUniformGridPanel::Slot(1, 0)
 							+ SUniformGridPanel::Slot(2, 0)
@@ -243,11 +239,11 @@ TSharedRef<SDockTab> FCameraModule::OnSpawnPluginTab(const FSpawnTabArgs& SpawnT
 		+ SHorizontalBox::Slot()
 			[
 				SNew(SBorder)
-				//.HAlign(HAlign_Center)
-				//.VAlign(VAlign_Center)
-				//[
-				//	SNew(SImage)//.Image(new FSlateImageBrush(BrushName, FVector2D(128, 128)))
-				//]
+				.HAlign(HAlign_Center)
+				.VAlign(VAlign_Center)
+				[
+					SNew(SImage).Image(new FSlateImageBrush(BrushName, FVector2D(128, 128)))
+				]
 			]
 		
 		];
