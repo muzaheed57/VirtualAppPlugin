@@ -1,23 +1,25 @@
 {
-	"FileVersion": 3,
-	"Version": 1,
-	"VersionName": "1.0",
-	"FriendlyName": "Camera",
-	"Description": "",
-	"Category": "Other",
-	"CreatedBy": "",
-	"CreatedByURL": "",
-	"DocsURL": "",
-	"MarketplaceURL": "",
-	"SupportURL": "",
-	"CanContainContent": false,
-	"IsBetaVersion": false,
-	"Installed": false,
-	"Modules": [
-		{
-			"Name": "Camera",
-			"Type": "Editor",
-			"LoadingPhase": "Default"
-		}
-	]
+  "FileVersion": 3,
+  "Version": 1,
+  "VersionName": "1.0",
+  "FriendlyName": "Camera",
+  "Description": "",
+  "Category": "Other",
+  "CreatedBy": "byowls",
+  "CreatedByURL": "https://byowls.com/",
+  "EngineVersion": "4.22.0",
+  "WhitelistPlatforms": [ "Win64", "Win32" ],
+  "DocsURL": "",
+  "MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/8d872fba6cde41fc9288dd8baad6e49e",
+  "SupportURL": "",
+  "CanContainContent": false,
+  "IsBetaVersion": true,
+  "Installed": false,
+  "Modules": [
+    {
+      "Name": "Camera",
+      "Type": "Editor",
+      "LoadingPhase": "Default"
+    }
+  ]
 }

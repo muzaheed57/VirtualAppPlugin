@@ -1,3 +1,5 @@
+// Copyright 2019 ByOwls. All Rights Reserved.
+
 #include "MyActor.h"
 #include <thread>
 #include "GameFramework/Pawn.h"
