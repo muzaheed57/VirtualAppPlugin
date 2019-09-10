@@ -1,4 +1,4 @@
-// Copyright 1998-2018 Epic Games, Inc. All Rights Reserved.
+// Copyright 1998-2019 Epic Games, Inc. All Rights Reserved.
 /*===========================================================================
 	Generated code exported from UnrealHeaderTool.
 	DO NOT modify this manually! Edit the corresponding .h files instead!
@@ -13,28 +13,8 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 #endif
 #define CAMERA_MyActor_generated_h
 
-#define VirtualAppPlugin_Plugins_Camera_Source_Camera_Public_MyActor_h_17_RPC_WRAPPERS \
- \
-	DECLARE_FUNCTION(execLaunchTCP) \
-	{ \
-		P_FINISH; \
-		P_NATIVE_BEGIN; \
-		*(bool*)Z_Param__Result=P_THIS->LaunchTCP(); \
-		P_NATIVE_END; \
-	}
-
-
-#define VirtualAppPlugin_Plugins_Camera_Source_Camera_Public_MyActor_h_17_RPC_WRAPPERS_NO_PURE_DECLS \
- \
-	DECLARE_FUNCTION(execLaunchTCP) \
-	{ \
-		P_FINISH; \
-		P_NATIVE_BEGIN; \
-		*(bool*)Z_Param__Result=P_THIS->LaunchTCP(); \
-		P_NATIVE_END; \
-	}
-
-
+#define VirtualAppPlugin_Plugins_Camera_Source_Camera_Public_MyActor_h_17_RPC_WRAPPERS
+#define VirtualAppPlugin_Plugins_Camera_Source_Camera_Public_MyActor_h_17_RPC_WRAPPERS_NO_PURE_DECLS
 #define VirtualAppPlugin_Plugins_Camera_Source_Camera_Public_MyActor_h_17_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesAMyActor(); \
@@ -102,6 +82,8 @@ public: \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
+
+template<> CAMERA_API UClass* StaticClass<class AMyActor>();
 
 #undef CURRENT_FILE_ID
 #define CURRENT_FILE_ID VirtualAppPlugin_Plugins_Camera_Source_Camera_Public_MyActor_h

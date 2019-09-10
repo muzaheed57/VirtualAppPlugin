@@ -11,7 +11,7 @@
   "WhitelistPlatforms": [ "Win64", "Win32" ],
   "DocsURL": "",
   "MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/8d872fba6cde41fc9288dd8baad6e49e",
-  "SupportURL": "",
+  "SupportURL": "buravkov.mikhail@gmail.com",
   "CanContainContent": false,
   "IsBetaVersion": true,
   "Installed": false,

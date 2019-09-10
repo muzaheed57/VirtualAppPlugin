@@ -1,7 +1,6 @@
 // Copyright 2019 ByOwls. All Rights Reserved.
 
 #include "MyActor.h"
-#include <thread>
 #include "GameFramework/Pawn.h"
 
 const float g_speedShowDebugMessage = 0.05f;
@@ -18,31 +17,36 @@ bool AMyActor::LaunchTCP()
 
 void AMyActor::BeginPlay()
 {
-	if (obj1.s_GetShowDebugMessage(false))
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Start")));
-	for (TActorIterator < AActor > ActorItr(GetWorld()); ActorItr; ++ActorItr)
+	static bool buff = true;// ue4 called func BeginPlay two times
+
+	if (buff == true)
 	{
-		if (obj1.s_GetCurrentItemLabel(false, false).ToString() == ActorItr->GetName())
+		if (obj1.s_GetShowDebugMessage(false))
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Start")));
+		for (TActorIterator < AActor > ActorItr(GetWorld()); ActorItr; ++ActorItr)
 		{
-			currentActor = *ActorItr;
-			break;
+			if (obj1.s_GetCurrentItemLabel(false, false).ToString() == ActorItr->GetName())
+			{
+				currentActor = *ActorItr;
+				break;
+			}
 		}
+		ZeroCoordinate.X = currentActor->GetActorLocation().X;
+		ZeroCoordinate.Y = currentActor->GetActorLocation().Y;
+		ZeroCoordinate.Z = currentActor->GetActorLocation().Z;
+		buff = false;
+		LaunchTCP();
 	}
-	ZeroCoordinate.X = currentActor->GetActorLocation().X;
-	ZeroCoordinate.Y = currentActor->GetActorLocation().Y;
-	ZeroCoordinate.Z = currentActor->GetActorLocation().Z;
-	LaunchTCP();
 }
 
 void AMyActor::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-	if (obj1.s_GetShowDebugMessage(false))
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("End")));
-
 	UWorld* World = GetWorld();
 
-	GetWorld()->GetTimerManager().ClearTimer(TCPConnectionListenerTimerHandle);
-	GetWorld()->GetTimerManager().ClearTimer(TCPSocketListenerTimerHandle);
+	if (&TCPConnectionListenerTimerHandle != nullptr)
+		GetWorld()->GetTimerManager().ClearTimer(TCPConnectionListenerTimerHandle);
+	if (&TCPSocketListenerTimerHandle != NULL)
+		GetWorld()->GetTimerManager().ClearTimer(TCPSocketListenerTimerHandle);
 
 	if (ConnectionSocket != NULL) {
 		ConnectionSocket->Close();
@@ -50,8 +54,7 @@ void AMyActor::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	if (ListenerSocket != NULL) {
 		ListenerSocket->Close();
 	}
-
-	Super::EndPlay(EndPlayReason);
+	//Super::EndPlay(EndPlayReason);
 }
 
 //Rama's Start TCP Receiver
@@ -186,8 +189,6 @@ void AMyActor::TCPConnectionListener()
 			UWorld* World = GetWorld();
 
 			World->GetTimerManager().SetTimer(TCPSocketListenerTimerHandle, this, &AMyActor::TCPSocketListener, 0.033f, true);
-
-			AMyActor::TCPSocketListener();
 		}
 	}
 }
@@ -204,23 +205,19 @@ void AMyActor::TCPSocketListener()
 {
 	if (!ConnectionSocket) return;
 
-	//Binary Array!
 	TArray<uint8> ReceivedData;
 
 	uint32 Size;
+
 	while (ConnectionSocket->HasPendingData(Size))
 	{
-		ReceivedData.Init(FMath::Min(Size, 65507u), Size);
-
 		int32 Read = 0;
+		ReceivedData.Init(FMath::Min(Size, 65507u), Size);
 		ConnectionSocket->Recv(ReceivedData.GetData(), ReceivedData.Num(), Read);
 	}
 
-	if (ReceivedData.Num() <= 0)
-	{
-		return;
-	}
-
+	if (ReceivedData.Num() <= 0) return;
+	
 	//String From Binary Array
 	FString ReceivedUE4String = StringFromBinaryArray(ReceivedData);
 
@@ -235,47 +232,31 @@ void AMyActor::TCPSocketListener()
 	FVector LocationStringData = currentActor->GetActorLocation();
 	FRotator RotationStringData = currentActor->GetActorRotation();
 	FQuat asd = RotationStringData.Quaternion();
-	if (test == 0)
-	{
-		ZeroCoordinate.X = FCString::Atof(*(FString(FindSymbolInStr(cstr, "z").c_str())));
-		ZeroCoordinate.Y = FCString::Atof(*(FString(FindSymbolInStr(cstr, "x").c_str())));
-		ZeroCoordinate.Z = FCString::Atof(*(FString(FindSymbolInStr(cstr, "y").c_str())));
-		test = 1;
-	}
-	else
-	{
-		LocationStringData.X = (FCString::Atof(*(FString(FindSymbolInStr(cstr, "z").c_str()))) - ZeroCoordinate.X) * obj1.s_GetCoordinateMul(false);
-		LocationStringData.Y = (FCString::Atof(*(FString(FindSymbolInStr(cstr, "x").c_str()))) - ZeroCoordinate.Y) * obj1.s_GetCoordinateMul(false) * (-1);
-		LocationStringData.Z = (FCString::Atof(*(FString(FindSymbolInStr(cstr, "y").c_str()))) - ZeroCoordinate.Z) * obj1.s_GetCoordinateMul(false);
+
+		LocationStringData.X = ZeroCoordinate.X + FCString::Atof(*(FString(FindSymbolInStr(cstr, "z").c_str()))) * obj1.s_GetCoordinateMul(false) * (-1);
+		LocationStringData.Y = ZeroCoordinate.Y + FCString::Atof(*(FString(FindSymbolInStr(cstr, "x").c_str()))) * obj1.s_GetCoordinateMul(false);
+		LocationStringData.Z = ZeroCoordinate.Z + FCString::Atof(*(FString(FindSymbolInStr(cstr, "y").c_str()))) * obj1.s_GetCoordinateMul(false);
 
 		currentActor->SetActorLocation(LocationStringData);
 
-		asd.X = FCString::Atof(*(FString(FindSymbolInStr(cstr, "r").c_str()))) * (-1); // p
-		asd.Y = FCString::Atof(*(FString(FindSymbolInStr(cstr, "p").c_str()))); // yaw
-		asd.Z = FCString::Atof(*(FString(FindSymbolInStr(cstr, "yaw").c_str()))) * (-1); // r
-		asd.W = FCString::Atof(*(FString(FindSymbolInStr(cstr, "ww").c_str()))); // ww
+		asd.X = FCString::Atof(*(FString(FindSymbolInStr(cstr, "r").c_str())));; //p
+		asd.Y = FCString::Atof(*(FString(FindSymbolInStr(cstr, "p").c_str()))) * (-1); //yaw
+		asd.Z = FCString::Atof(*(FString(FindSymbolInStr(cstr, "yaw").c_str()))) * (-1); //r
+		asd.W = FCString::Atof(*(FString(FindSymbolInStr(cstr, "ww").c_str())));
 
 		currentActor->SetActorRotation(asd);
-
-			GEngine->AddOnScreenDebugMessage(-1, g_speedShowDebugMessage, FColor::Cyan, FString::SanitizeFloat(asd.W));
-			GEngine->AddOnScreenDebugMessage(-1, g_speedShowDebugMessage, FColor::Blue, FString::SanitizeFloat(asd.Z));
-			GEngine->AddOnScreenDebugMessage(-1, g_speedShowDebugMessage, FColor::Green, FString::SanitizeFloat(asd.Y));
-			GEngine->AddOnScreenDebugMessage(-1, g_speedShowDebugMessage, FColor::Red, FString::SanitizeFloat(asd.X));
-
-			GEngine->AddOnScreenDebugMessage(-1, g_speedShowDebugMessage, FColor::Emerald, "////////////////////////rotation");
-
-			GEngine->AddOnScreenDebugMessage(-1, g_speedShowDebugMessage, FColor::Emerald, FString::SanitizeFloat(LocationStringData.Z));
-			GEngine->AddOnScreenDebugMessage(-1, g_speedShowDebugMessage, FColor::White, FString::SanitizeFloat(LocationStringData.Y));
-			GEngine->AddOnScreenDebugMessage(-1, g_speedShowDebugMessage, FColor::Yellow, FString::SanitizeFloat(LocationStringData.X));
-
-			/*GEngine->AddOnScreenDebugMessage(-1, g_speedShowDebugMessage, FColor::Yellow, FString(FindSymbolInStr(cstr, "ww").c_str()));
-			GEngine->AddOnScreenDebugMessage(-1, g_speedShowDebugMessage, FColor::Emerald, FString(FindSymbolInStr(cstr, "r").c_str()));
-			GEngine->AddOnScreenDebugMessage(-1, g_speedShowDebugMessage, FColor::Blue, FString(FindSymbolInStr(cstr, "yaw").c_str()));
-			GEngine->AddOnScreenDebugMessage(-1, g_speedShowDebugMessage, FColor::White, FString(FindSymbolInStr(cstr, "p").c_str()));
-			GEngine->AddOnScreenDebugMessage(-1, g_speedShowDebugMessage, FColor::Blue, FString(FindSymbolInStr(cstr, "z").c_str()));
-			GEngine->AddOnScreenDebugMessage(-1, g_speedShowDebugMessage, FColor::Green, FString(FindSymbolInStr(cstr, "y").c_str()));
-			GEngine->AddOnScreenDebugMessage(-1, g_speedShowDebugMessage, FColor::Red, FString(FindSymbolInStr(cstr, "x").c_str()));*/
-	}
+		/*---------------------------------*/
+		GEngine->AddOnScreenDebugMessage(-1, g_speedShowDebugMessage, FColor::Cyan, FString::SanitizeFloat(asd.W));
+		GEngine->AddOnScreenDebugMessage(-1, g_speedShowDebugMessage, FColor::Blue, FString::SanitizeFloat(asd.Z));
+		GEngine->AddOnScreenDebugMessage(-1, g_speedShowDebugMessage, FColor::Green, FString::SanitizeFloat(asd.Y));
+		GEngine->AddOnScreenDebugMessage(-1, g_speedShowDebugMessage, FColor::Red, FString::SanitizeFloat(asd.X));
+		
+		GEngine->AddOnScreenDebugMessage(-1, g_speedShowDebugMessage, FColor::Emerald, "////////////////////////rotation");
+		
+		GEngine->AddOnScreenDebugMessage(-1, g_speedShowDebugMessage, FColor::Emerald, FString::SanitizeFloat(LocationStringData.Z));
+		GEngine->AddOnScreenDebugMessage(-1, g_speedShowDebugMessage, FColor::White, FString::SanitizeFloat(LocationStringData.Y));
+		GEngine->AddOnScreenDebugMessage(-1, g_speedShowDebugMessage, FColor::Yellow, FString::SanitizeFloat(LocationStringData.X));
+		/*---------------------------------*/
 	ReceivedUE4String.Empty();
 	ReceivedData.Empty();
 }

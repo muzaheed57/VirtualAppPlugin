@@ -1,0 +1,15 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.Camera.cpp.obj": [
+			"Camera.cpp.obj",
+			"CameraCommands.cpp.obj",
+			"CameraStyle.cpp.obj",
+			"MyActor.cpp.obj"
+		],
+		"Module.Camera.gen.cpp.obj": [
+			"Camera.init.gen.cpp.obj",
+			"MyActor.gen.cpp.obj"
+		]
+	}
+}
