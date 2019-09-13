@@ -3,26 +3,14 @@
 #include "MyActor.h"
 #include "GameFramework/Pawn.h"
 
-const float g_speedShowDebugMessage = 0.05f;
-
-// TCP Server Code
-bool AMyActor::LaunchTCP()
-{
-	if (!StartTCPReceiver("SocketListener", obj1.s_GetIp(false), FCString::Atoi(*obj1.s_GetPort(false))))
-	{
-		return false;
-	}
-	return true;
-}
+#define SHOW_TIME_MESSAGE  0.05f
 
 void AMyActor::BeginPlay()
 {
-	static bool buff = true;// ue4 called func BeginPlay two times
+	static bool buff = true;
 
 	if (buff == true)
 	{
-		if (obj1.s_GetShowDebugMessage(false))
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Start")));
 		for (TActorIterator < AActor > ActorItr(GetWorld()); ActorItr; ++ActorItr)
 		{
 			if (obj1.s_GetCurrentItemLabel(false, false).ToString() == ActorItr->GetName())
@@ -35,18 +23,14 @@ void AMyActor::BeginPlay()
 		ZeroCoordinate.Y = currentActor->GetActorLocation().Y;
 		ZeroCoordinate.Z = currentActor->GetActorLocation().Z;
 		buff = false;
-		LaunchTCP();
+		StartTCPReceiver("SocketListener", obj1.s_GetIp(false), FCString::Atoi(*obj1.s_GetPort(false)));
 	}
 }
 
 void AMyActor::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-	UWorld* World = GetWorld();
-
 	if (&TCPConnectionListenerTimerHandle != nullptr)
 		GetWorld()->GetTimerManager().ClearTimer(TCPConnectionListenerTimerHandle);
-	if (&TCPSocketListenerTimerHandle != NULL)
-		GetWorld()->GetTimerManager().ClearTimer(TCPSocketListenerTimerHandle);
 
 	if (ConnectionSocket != NULL) {
 		ConnectionSocket->Close();
@@ -54,7 +38,6 @@ void AMyActor::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	if (ListenerSocket != NULL) {
 		ListenerSocket->Close();
 	}
-	//Super::EndPlay(EndPlayReason);
 }
 
 //Rama's Start TCP Receiver
@@ -63,7 +46,6 @@ bool AMyActor::StartTCPReceiver(
 	const FString& TheIP,
 	const int32 ThePort
 ) {
-
 	//Rama's CreateTCPConnectionListener
 	ListenerSocket = CreateTCPConnectionListener(YourChosenSocketName, TheIP, ThePort);
 
@@ -71,18 +53,18 @@ bool AMyActor::StartTCPReceiver(
 	if (!ListenerSocket)
 	{
 		if (obj1.s_GetShowDebugMessage(false))
-			GEngine->AddOnScreenDebugMessage(-1, g_speedShowDebugMessage, FColor::Red, FString::Printf(TEXT("StartTCPReceiver>> Listen socket could not be created! ~> %s %d"), *TheIP, ThePort));
+			GEngine->AddOnScreenDebugMessage(-1, SHOW_TIME_MESSAGE, FColor::Red, FString::Printf(TEXT("StartTCPReceiver>> Listen socket could not be created! ~> %s %d"), *TheIP, ThePort));
 		return false;
 	}
 
 	//Start the Listener!
 	//thread this eventually
-	UWorld* World = GetWorld();
+	GetWorld()->GetTimerManager().SetTimer(TCPConnectionListenerTimerHandle, this, &AMyActor::TCPConnectionListener, 0.011f, true);
 
-	World->GetTimerManager().SetTimer(TCPConnectionListenerTimerHandle, this, &AMyActor::TCPConnectionListener, 0.0001f, true);
+	//AMyActor::TCPConnectionListener();
 
 	if (obj1.s_GetShowDebugMessage(false))
-		GEngine->AddOnScreenDebugMessage(-1, g_speedShowDebugMessage, FColor::Green, FString::Printf(TEXT("StartTCPReceiver>> Listen socket created")));
+		GEngine->AddOnScreenDebugMessage(-1, SHOW_TIME_MESSAGE, FColor::Green, FString::Printf(TEXT("StartTCPReceiver>> Listen socket created")));
 	return true;
 }
 
@@ -92,13 +74,13 @@ FSocket* AMyActor::CreateTCPConnectionListener(const FString& YourChosenSocketNa
 	if (!FormatIP4ToNumber(TheIP, IP4Nums))
 	{
 		if (obj1.s_GetShowDebugMessage(false))
-			GEngine->AddOnScreenDebugMessage(-1, g_speedShowDebugMessage, FColor::Red, FString::Printf(TEXT("FormatIP4ToNumber >> does not format ip")));
+			GEngine->AddOnScreenDebugMessage(-1, SHOW_TIME_MESSAGE, FColor::Red, FString::Printf(TEXT("FormatIP4ToNumber >> does not format ip")));
 		return false; 
 	}
 	else
 	{
 		if (obj1.s_GetShowDebugMessage(false))
-			GEngine->AddOnScreenDebugMessage(-1, g_speedShowDebugMessage, FColor::Green, FString::Printf(TEXT("FormatIP4ToNumber >> format ip true")));
+			GEngine->AddOnScreenDebugMessage(-1, SHOW_TIME_MESSAGE, FColor::Green, FString::Printf(TEXT("FormatIP4ToNumber >> format ip true")));
 	}
 
 	//Create Socket
@@ -155,17 +137,13 @@ std::string AMyActor::FindSymbolInStr(const std::string & str, std::string symbo
 
 void AMyActor::TCPConnectionListener()
 {
-	if (!ListenerSocket)
-		return;
-	
+	if (!ListenerSocket) return;
+
 	//Remote address
 	TSharedRef<FInternetAddr> RemoteAddress = ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM)->CreateInternetAddr();
 	bool Pending;
-	
-	// handle incoming connections
-	ListenerSocket->HasPendingConnection(Pending);
 
-	if (Pending)
+	if (ListenerSocket->HasPendingConnection(Pending) && Pending)
 	{
 		//Already have a Connection? destroy previous
 		if (ConnectionSocket)
@@ -178,17 +156,14 @@ void AMyActor::TCPConnectionListener()
 		ConnectionSocket = ListenerSocket->Accept(*RemoteAddress, TEXT("TCP Received Socket Connection"));
 		
 		if (obj1.s_GetShowDebugMessage(false))
-			GEngine->AddOnScreenDebugMessage(-1, g_speedShowDebugMessage, FColor::Green, FString::Printf(TEXT("TCPConnectionListener >> TCP Received Socket Connection")));
+			GEngine->AddOnScreenDebugMessage(-1, SHOW_TIME_MESSAGE, FColor::Green, FString::Printf(TEXT("TCPConnectionListener >> TCP Received Socket Connection")));
 		
 		if (ConnectionSocket != NULL)
 		{
 			//Global cache of current Remote Address
 			RemoteAddressForConnection = FIPv4Endpoint(RemoteAddress);
 
-			//can thread this too
-			UWorld* World = GetWorld();
-
-			World->GetTimerManager().SetTimer(TCPSocketListenerTimerHandle, this, &AMyActor::TCPSocketListener, 0.033f, true);
+			AMyActor::TCPSocketListener();
 		}
 	}
 }
@@ -211,8 +186,9 @@ void AMyActor::TCPSocketListener()
 
 	while (ConnectionSocket->HasPendingData(Size))
 	{
-		int32 Read = 0;
 		ReceivedData.Init(FMath::Min(Size, 65507u), Size);
+
+		int32 Read = 0;
 		ConnectionSocket->Recv(ReceivedData.GetData(), ReceivedData.Num(), Read);
 	}
 
@@ -222,16 +198,16 @@ void AMyActor::TCPSocketListener()
 	FString ReceivedUE4String = StringFromBinaryArray(ReceivedData);
 
 	if (obj1.s_GetShowDebugMessage(false))
-		GEngine->AddOnScreenDebugMessage(-1, g_speedShowDebugMessage, FColor::Blue, FString::Printf(TEXT("As String Data ~> %s"), *ReceivedUE4String));
+		GEngine->AddOnScreenDebugMessage(-1, SHOW_TIME_MESSAGE, FColor::Blue, FString::Printf(TEXT("As String Data ~> %s"), *ReceivedUE4String));
 
 	const std::string cstr(reinterpret_cast<const char*>(ReceivedData.GetData()), ReceivedData.Num());
 
 	if (obj1.s_GetShowDebugMessage(false))
-		GEngine->AddOnScreenDebugMessage(-1, g_speedShowDebugMessage, FColor::Green, currentActor->GetName());
+		GEngine->AddOnScreenDebugMessage(-1, SHOW_TIME_MESSAGE, FColor::Green, currentActor->GetName());
 
 	FVector LocationStringData = currentActor->GetActorLocation();
 	FRotator RotationStringData = currentActor->GetActorRotation();
-	FQuat asd = RotationStringData.Quaternion();
+	FQuat RotationQuat = RotationStringData.Quaternion();
 
 		LocationStringData.X = ZeroCoordinate.X + FCString::Atof(*(FString(FindSymbolInStr(cstr, "z").c_str()))) * obj1.s_GetCoordinateMul(false) * (-1);
 		LocationStringData.Y = ZeroCoordinate.Y + FCString::Atof(*(FString(FindSymbolInStr(cstr, "x").c_str()))) * obj1.s_GetCoordinateMul(false);
@@ -239,24 +215,21 @@ void AMyActor::TCPSocketListener()
 
 		currentActor->SetActorLocation(LocationStringData);
 
-		asd.X = FCString::Atof(*(FString(FindSymbolInStr(cstr, "r").c_str())));; //p
-		asd.Y = FCString::Atof(*(FString(FindSymbolInStr(cstr, "p").c_str()))) * (-1); //yaw
-		asd.Z = FCString::Atof(*(FString(FindSymbolInStr(cstr, "yaw").c_str()))) * (-1); //r
-		asd.W = FCString::Atof(*(FString(FindSymbolInStr(cstr, "ww").c_str())));
+		RotationQuat.X = FCString::Atof(*(FString(FindSymbolInStr(cstr, "r").c_str()))); //p
+		RotationQuat.Y = FCString::Atof(*(FString(FindSymbolInStr(cstr, "p").c_str()))) * (-1); //yaw
+		RotationQuat.Z = FCString::Atof(*(FString(FindSymbolInStr(cstr, "yaw").c_str()))) * (-1); //r
+		RotationQuat.W = FCString::Atof(*(FString(FindSymbolInStr(cstr, "ww").c_str())));
 
-		currentActor->SetActorRotation(asd);
+		currentActor->SetActorRotation(RotationQuat);
 		/*---------------------------------*/
-		GEngine->AddOnScreenDebugMessage(-1, g_speedShowDebugMessage, FColor::Cyan, FString::SanitizeFloat(asd.W));
-		GEngine->AddOnScreenDebugMessage(-1, g_speedShowDebugMessage, FColor::Blue, FString::SanitizeFloat(asd.Z));
-		GEngine->AddOnScreenDebugMessage(-1, g_speedShowDebugMessage, FColor::Green, FString::SanitizeFloat(asd.Y));
-		GEngine->AddOnScreenDebugMessage(-1, g_speedShowDebugMessage, FColor::Red, FString::SanitizeFloat(asd.X));
+		GEngine->AddOnScreenDebugMessage(-1, SHOW_TIME_MESSAGE, FColor::Cyan, FString::SanitizeFloat(RotationQuat.W));
+		GEngine->AddOnScreenDebugMessage(-1, SHOW_TIME_MESSAGE, FColor::Blue, FString::SanitizeFloat(RotationQuat.Z));
+		GEngine->AddOnScreenDebugMessage(-1, SHOW_TIME_MESSAGE, FColor::Green, FString::SanitizeFloat(RotationQuat.Y));
+		GEngine->AddOnScreenDebugMessage(-1, SHOW_TIME_MESSAGE, FColor::Red, FString::SanitizeFloat(RotationQuat.X));
 		
-		GEngine->AddOnScreenDebugMessage(-1, g_speedShowDebugMessage, FColor::Emerald, "////////////////////////rotation");
+		GEngine->AddOnScreenDebugMessage(-1, SHOW_TIME_MESSAGE, FColor::Emerald, "////////////////////////rotation");
 		
-		GEngine->AddOnScreenDebugMessage(-1, g_speedShowDebugMessage, FColor::Emerald, FString::SanitizeFloat(LocationStringData.Z));
-		GEngine->AddOnScreenDebugMessage(-1, g_speedShowDebugMessage, FColor::White, FString::SanitizeFloat(LocationStringData.Y));
-		GEngine->AddOnScreenDebugMessage(-1, g_speedShowDebugMessage, FColor::Yellow, FString::SanitizeFloat(LocationStringData.X));
-		/*---------------------------------*/
-	ReceivedUE4String.Empty();
-	ReceivedData.Empty();
+		GEngine->AddOnScreenDebugMessage(-1, SHOW_TIME_MESSAGE, FColor::Emerald, FString::SanitizeFloat(LocationStringData.Z));
+		GEngine->AddOnScreenDebugMessage(-1, SHOW_TIME_MESSAGE, FColor::White, FString::SanitizeFloat(LocationStringData.Y));
+		GEngine->AddOnScreenDebugMessage(-1, SHOW_TIME_MESSAGE, FColor::Yellow, FString::SanitizeFloat(LocationStringData.X));
 }

@@ -23,7 +23,6 @@ private:
 	FVector ZeroCoordinate;
 	FCameraModule obj1;
 	
-	FTimerHandle TCPSocketListenerTimerHandle;
 	FTimerHandle TCPConnectionListenerTimerHandle;
 
 	bool StartTCPReceiver(
@@ -45,10 +44,7 @@ private:
 	bool FormatIP4ToNumber(const FString& TheIP, uint8(&Out)[4]);
 	std::string FindSymbolInStr(const std::string &str, std::string symbol);
 
-	bool LaunchTCP();
-
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-
 };

@@ -16,7 +16,6 @@ class FCameraModule : public IModuleInterface
 {
 public:
 
-//	typedef TSharedPtr<FString> FComboItemType;
 	TSharedPtr<FString> CurrentItem;
 	TArray<TSharedPtr<FString>> Options;
 	TSharedRef<SWidget> MakeWidgetForOption(TSharedPtr<FString> InOption);
