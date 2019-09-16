@@ -4,12 +4,14 @@
 #include "GameFramework/Pawn.h"
 
 #define SHOW_TIME_MESSAGE  0.05f
+static bool g_OneStartBeginPlay = true;
 
 void AMyActor::BeginPlay()
 {
-	static bool buff = true;
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "BeginPlay");
+	Super::BeginPlay();
 
-	if (buff == true)
+	if (g_OneStartBeginPlay == true)
 	{
 		for (TActorIterator < AActor > ActorItr(GetWorld()); ActorItr; ++ActorItr)
 		{
@@ -22,13 +24,15 @@ void AMyActor::BeginPlay()
 		ZeroCoordinate.X = currentActor->GetActorLocation().X;
 		ZeroCoordinate.Y = currentActor->GetActorLocation().Y;
 		ZeroCoordinate.Z = currentActor->GetActorLocation().Z;
-		buff = false;
+		g_OneStartBeginPlay = false;
 		StartTCPReceiver("SocketListener", obj1.s_GetIp(false), FCString::Atoi(*obj1.s_GetPort(false)));
 	}
 }
 
 void AMyActor::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "EndPlay");
+	Super::EndPlay(EndPlayReason);
 	if (&TCPConnectionListenerTimerHandle != nullptr)
 		GetWorld()->GetTimerManager().ClearTimer(TCPConnectionListenerTimerHandle);
 
@@ -38,6 +42,7 @@ void AMyActor::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	if (ListenerSocket != NULL) {
 		ListenerSocket->Close();
 	}
+	g_OneStartBeginPlay = true;
 }
 
 //Rama's Start TCP Receiver
@@ -138,7 +143,7 @@ std::string AMyActor::FindSymbolInStr(const std::string & str, std::string symbo
 void AMyActor::TCPConnectionListener()
 {
 	if (!ListenerSocket) return;
-
+	
 	//Remote address
 	TSharedRef<FInternetAddr> RemoteAddress = ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM)->CreateInternetAddr();
 	bool Pending;
