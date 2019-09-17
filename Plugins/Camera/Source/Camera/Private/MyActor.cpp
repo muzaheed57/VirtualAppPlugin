@@ -8,7 +8,6 @@ static bool g_OneStartBeginPlay = true;
 
 void AMyActor::BeginPlay()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "BeginPlay");
 	Super::BeginPlay();
 
 	if (g_OneStartBeginPlay == true)
@@ -31,17 +30,13 @@ void AMyActor::BeginPlay()
 
 void AMyActor::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "EndPlay");
 	Super::EndPlay(EndPlayReason);
-	if (&TCPConnectionListenerTimerHandle != nullptr)
-		GetWorld()->GetTimerManager().ClearTimer(TCPConnectionListenerTimerHandle);
-
-	if (ConnectionSocket != NULL) {
-		ConnectionSocket->Close();
-	}
-	if (ListenerSocket != NULL) {
-		ListenerSocket->Close();
-	}
+		if (&TCPConnectionListenerTimerHandle != nullptr)
+			GetWorld()->GetTimerManager().ClearTimer(TCPConnectionListenerTimerHandle);
+		if (ConnectionSocket != NULL)
+			ConnectionSocket->Close();
+		if (ListenerSocket != NULL)
+			ListenerSocket->Close();
 	g_OneStartBeginPlay = true;
 }
 
@@ -214,10 +209,10 @@ void AMyActor::TCPSocketListener()
 	FRotator RotationStringData = currentActor->GetActorRotation();
 	FQuat RotationQuat = RotationStringData.Quaternion();
 
-		LocationStringData.X = ZeroCoordinate.X + FCString::Atof(*(FString(FindSymbolInStr(cstr, "z").c_str()))) * obj1.s_GetCoordinateMul(false) * (-1);
-		LocationStringData.Y = ZeroCoordinate.Y + FCString::Atof(*(FString(FindSymbolInStr(cstr, "x").c_str()))) * obj1.s_GetCoordinateMul(false);
-		LocationStringData.Z = ZeroCoordinate.Z + FCString::Atof(*(FString(FindSymbolInStr(cstr, "y").c_str()))) * obj1.s_GetCoordinateMul(false);
-
+		LocationStringData.X = (FMath::RoundToFloat(ZeroCoordinate.X + FCString::Atof(*(FString(FindSymbolInStr(cstr, "z").c_str()))) * obj1.s_GetCoordinateMul(false)) * (-1));
+		LocationStringData.Y = (FMath::RoundToFloat(ZeroCoordinate.Y + FCString::Atof(*(FString(FindSymbolInStr(cstr, "x").c_str()))) * obj1.s_GetCoordinateMul(false)));
+		LocationStringData.Z = (FMath::RoundToFloat(ZeroCoordinate.Z + FCString::Atof(*(FString(FindSymbolInStr(cstr, "y").c_str()))) * obj1.s_GetCoordinateMul(false)));
+		
 		currentActor->SetActorLocation(LocationStringData);
 
 		RotationQuat.X = FCString::Atof(*(FString(FindSymbolInStr(cstr, "r").c_str()))); //p
