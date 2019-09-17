@@ -212,14 +212,14 @@ void AMyActor::TCPSocketListener()
 		LocationStringData.X = (FMath::RoundToFloat(ZeroCoordinate.X + FCString::Atof(*(FString(FindSymbolInStr(cstr, "z").c_str()))) * obj1.s_GetCoordinateMul(false)) * (-1));
 		LocationStringData.Y = (FMath::RoundToFloat(ZeroCoordinate.Y + FCString::Atof(*(FString(FindSymbolInStr(cstr, "x").c_str()))) * obj1.s_GetCoordinateMul(false)));
 		LocationStringData.Z = (FMath::RoundToFloat(ZeroCoordinate.Z + FCString::Atof(*(FString(FindSymbolInStr(cstr, "y").c_str()))) * obj1.s_GetCoordinateMul(false)));
-		
+			
 		currentActor->SetActorLocation(LocationStringData);
 
-		RotationQuat.X = FCString::Atof(*(FString(FindSymbolInStr(cstr, "r").c_str()))); //p
-		RotationQuat.Y = FCString::Atof(*(FString(FindSymbolInStr(cstr, "p").c_str()))) * (-1); //yaw
-		RotationQuat.Z = FCString::Atof(*(FString(FindSymbolInStr(cstr, "yaw").c_str()))) * (-1); //r
+		RotationQuat.X = FMath::FloorToFloat(FCString::Atof(*(FString(FindSymbolInStr(cstr, "r").c_str()))) * 1000) / 1000; //p
+		RotationQuat.Y = FMath::FloorToFloat(FCString::Atof(*(FString(FindSymbolInStr(cstr, "p").c_str()))) * 1000) / 1000 * (-1); //yaw
+		RotationQuat.Z = FMath::FloorToFloat(FCString::Atof(*(FString(FindSymbolInStr(cstr, "yaw").c_str()))) * 1000) / 1000 * (-1); //r
 		RotationQuat.W = FCString::Atof(*(FString(FindSymbolInStr(cstr, "ww").c_str())));
-
+		
 		currentActor->SetActorRotation(RotationQuat);
 		/*---------------------------------*/
 		GEngine->AddOnScreenDebugMessage(-1, SHOW_TIME_MESSAGE, FColor::Cyan, FString::SanitizeFloat(RotationQuat.W));
