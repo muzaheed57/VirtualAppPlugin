@@ -59,7 +59,7 @@ bool AMyActor::StartTCPReceiver(
 
 	//Start the Listener!
 	//thread this eventually
-	GetWorld()->GetTimerManager().SetTimer(TCPConnectionListenerTimerHandle, this, &AMyActor::TCPConnectionListener, 0.011f, true);
+	GetWorld()->GetTimerManager().SetTimer(TCPConnectionListenerTimerHandle, this, &AMyActor::TCPConnectionListener, 0.02f, true);
 
 	//AMyActor::TCPConnectionListener();
 
@@ -181,6 +181,7 @@ void AMyActor::TCPSocketListener()
 	if (!ConnectionSocket) return;
 
 	TArray<uint8> ReceivedData;
+	static int32 delsize = 0;
 
 	uint32 Size;
 
@@ -193,7 +194,7 @@ void AMyActor::TCPSocketListener()
 	}
 
 	if (ReceivedData.Num() <= 0) return;
-	
+
 	//String From Binary Array
 	FString ReceivedUE4String = StringFromBinaryArray(ReceivedData);
 
@@ -209,11 +210,26 @@ void AMyActor::TCPSocketListener()
 	FRotator RotationStringData = currentActor->GetActorRotation();
 	FQuat RotationQuat = RotationStringData.Quaternion();
 
+
+	if (LocationStringData.X + 1.f == (FMath::RoundToFloat(ZeroCoordinate.X + FCString::Atof(*(FString(FindSymbolInStr(cstr, "z").c_str()))) * obj1.s_GetCoordinateMul(false)) * (-1))
+		|| LocationStringData.X == (FMath::RoundToFloat(ZeroCoordinate.X + FCString::Atof(*(FString(FindSymbolInStr(cstr, "z").c_str()))) * obj1.s_GetCoordinateMul(false)) * (-1))
+		|| LocationStringData.Y + 1.f == (FMath::RoundToFloat(ZeroCoordinate.Y + FCString::Atof(*(FString(FindSymbolInStr(cstr, "x").c_str()))) * obj1.s_GetCoordinateMul(false)))
+		|| LocationStringData.Y == (FMath::RoundToFloat(ZeroCoordinate.Y + FCString::Atof(*(FString(FindSymbolInStr(cstr, "x").c_str()))) * obj1.s_GetCoordinateMul(false)))
+		|| LocationStringData.Z + 1.f == (FMath::RoundToFloat(ZeroCoordinate.Z + FCString::Atof(*(FString(FindSymbolInStr(cstr, "y").c_str()))) * obj1.s_GetCoordinateMul(false)))
+		|| LocationStringData.Z == (FMath::RoundToFloat(ZeroCoordinate.Z + FCString::Atof(*(FString(FindSymbolInStr(cstr, "y").c_str()))) * obj1.s_GetCoordinateMul(false)))
+		) delsize++;
+	else if (LocationStringData.X + 2.f < (FMath::RoundToFloat(ZeroCoordinate.X + FCString::Atof(*(FString(FindSymbolInStr(cstr, "z").c_str()))) * obj1.s_GetCoordinateMul(false)) * (-1))
+		|| LocationStringData.X + 2.f > (FMath::RoundToFloat(ZeroCoordinate.X + FCString::Atof(*(FString(FindSymbolInStr(cstr, "z").c_str()))) * obj1.s_GetCoordinateMul(false)) * (-1)))
+		delsize = 0;
+
+	if (delsize <= 20)
+	{
 		LocationStringData.X = (FMath::RoundToFloat(ZeroCoordinate.X + FCString::Atof(*(FString(FindSymbolInStr(cstr, "z").c_str()))) * obj1.s_GetCoordinateMul(false)) * (-1));
 		LocationStringData.Y = (FMath::RoundToFloat(ZeroCoordinate.Y + FCString::Atof(*(FString(FindSymbolInStr(cstr, "x").c_str()))) * obj1.s_GetCoordinateMul(false)));
 		LocationStringData.Z = (FMath::RoundToFloat(ZeroCoordinate.Z + FCString::Atof(*(FString(FindSymbolInStr(cstr, "y").c_str()))) * obj1.s_GetCoordinateMul(false)));
-			
+
 		currentActor->SetActorLocation(LocationStringData);
+	}
 
 		RotationQuat.X = FMath::FloorToFloat(FCString::Atof(*(FString(FindSymbolInStr(cstr, "r").c_str()))) * 1000) / 1000; //p
 		RotationQuat.Y = FMath::FloorToFloat(FCString::Atof(*(FString(FindSymbolInStr(cstr, "p").c_str()))) * 1000) / 1000 * (-1); //yaw
