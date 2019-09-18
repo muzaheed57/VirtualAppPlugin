@@ -2,4 +2,3 @@
 #include "D:/any/git/VirtualAppPlugin/Plugins/Camera/Source/Camera/Private/Camera.cpp"
 #include "D:/any/git/VirtualAppPlugin/Plugins/Camera/Source/Camera/Private/CameraCommands.cpp"
 #include "D:/any/git/VirtualAppPlugin/Plugins/Camera/Source/Camera/Private/CameraStyle.cpp"
-#include "D:/any/git/VirtualAppPlugin/Plugins/Camera/Source/Camera/Private/MyActor.cpp"

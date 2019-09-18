@@ -833,6 +833,3 @@ d:\game\ue_4.23\engine\source\runtime\projects\public\ModuleDescriptor.h
 d:\game\ue_4.23\engine\source\runtime\projects\public\CustomBuildSteps.h
 d:\game\ue_4.23\engine\source\runtime\projects\public\LocalizationDescriptor.h
 d:\game\ue_4.23\engine\source\runtime\projects\public\PluginReferenceDescriptor.h
-D:/any/git/VirtualAppPlugin/Plugins/Camera/Source/Camera/Private/MyActor.cpp
-D:\any\git\VirtualAppPlugin\Plugins\Camera\Source\Camera\Public\MyActor.h
-D:\any\git\VirtualAppPlugin\Plugins\Camera\Intermediate\Build\Win64\UE4Editor\Inc\Camera\MyActor.generated.h

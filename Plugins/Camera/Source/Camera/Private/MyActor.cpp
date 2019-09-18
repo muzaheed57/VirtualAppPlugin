@@ -229,7 +229,7 @@ void AMyActor::TCPSocketListener()
 		LocationStringData.Z = (FMath::RoundToFloat(ZeroCoordinate.Z + FCString::Atof(*(FString(FindSymbolInStr(cstr, "y").c_str()))) * obj1.s_GetCoordinateMul(false)));
 
 		currentActor->SetActorLocation(LocationStringData);
-	}
+
 
 		RotationQuat.X = FMath::FloorToFloat(FCString::Atof(*(FString(FindSymbolInStr(cstr, "r").c_str()))) * 1000) / 1000; //p
 		RotationQuat.Y = FMath::FloorToFloat(FCString::Atof(*(FString(FindSymbolInStr(cstr, "p").c_str()))) * 1000) / 1000 * (-1); //yaw
@@ -237,6 +237,7 @@ void AMyActor::TCPSocketListener()
 		RotationQuat.W = FCString::Atof(*(FString(FindSymbolInStr(cstr, "ww").c_str())));
 		
 		currentActor->SetActorRotation(RotationQuat);
+	}
 		/*---------------------------------*/
 		GEngine->AddOnScreenDebugMessage(-1, SHOW_TIME_MESSAGE, FColor::Cyan, FString::SanitizeFloat(RotationQuat.W));
 		GEngine->AddOnScreenDebugMessage(-1, SHOW_TIME_MESSAGE, FColor::Blue, FString::SanitizeFloat(RotationQuat.Z));
