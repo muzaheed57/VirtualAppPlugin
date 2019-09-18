@@ -7,8 +7,7 @@
   "Category": "Other",
   "CreatedBy": "byowls",
   "CreatedByURL": "https://byowls.com/",
-  "EngineVersion": "4.22.0",
-  "WhitelistPlatforms": [ "Win64", "Win32" ],
+  "EngineVersion": "4.23.0",
   "DocsURL": "",
   "MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/8d872fba6cde41fc9288dd8baad6e49e",
   "SupportURL": "buravkov.mikhail@gmail.com",
@@ -19,7 +18,11 @@
     {
       "Name": "Camera",
       "Type": "Editor",
-      "LoadingPhase": "Default"
+      "LoadingPhase": "Default",
+      "WhitelistPlatforms": [
+        "Win64",
+        "Win32"
+      ]
     }
   ]
 }

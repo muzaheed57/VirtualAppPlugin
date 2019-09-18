@@ -71,7 +71,7 @@ void EmptyLinkFunctionForGeneratedCodeMyActor() {}
 		}
 		return OuterClass;
 	}
-	IMPLEMENT_CLASS(AMyActor, 2009526078);
+	IMPLEMENT_CLASS(AMyActor, 2651530825);
 	template<> CAMERA_API UClass* StaticClass<AMyActor>()
 	{
 		return AMyActor::StaticClass();
